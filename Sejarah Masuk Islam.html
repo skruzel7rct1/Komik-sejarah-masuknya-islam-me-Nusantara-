@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jejak Angin Nusantara: Masuknya Islam ke Sumatera</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Cinzel untuk sentuhan judul sejarah klasik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serifTitle: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        parchment: {
+                            50: '#FCF9F2',
+                            100: '#F5EFE2',
+                            200: '#E8DEC8',
+                            300: '#D4C3A3',
+                            800: '#4A3B2C',
+                            900: '#2E2318',
+                        },
+                        maritime: {
+                            700: '#1B4965',
+                            800: '#13354A',
+                            900: '#0B2230',
+                        },
+                        spice: {
+                            500: '#C87D32',
+                            600: '#A6611E',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Kustomisasi Scrollbar bernuansa perkamen */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5EFE2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C87D32;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A6611E;
+        }
+
+        /* Tekstur halus latar belakang perkamen */
+        .bg-parchment-texture {
+            background-color: #F5EFE2;
+            background-image: radial-gradient(rgba(74, 59, 44, 0.06) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        /* Animasi transisi halaman */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.985);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .animate-page-enter {
+            animation: fadeInScale 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Mencegah pemilihan teks saat menggeser (swipe) atau pan gambar */
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-parchment-texture text-parchment-900 font-sans min-h-screen flex flex-col antialiased selection:bg-spice-500 selection:text-white">
+
+    <!-- ==================== HEADER / NAVBAR UTAMA ==================== -->
+    <header class="sticky top-0 z-30 bg-maritime-900/95 backdrop-blur-md text-parchment-50 border-b border-spice-500/30 shadow-lg">
+        <div class="max-w-6xl mx-auto px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Judul & Subjudul Komik -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-spice-500 to-spice-600 flex items-center justify-center shadow-inner shrink-0 border border-parchment-200/30">
+                    <!-- Ikon Kompas / Maritim SVG -->
+                    <svg class="w-6 h-6 text-parchment-50" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-serifTitle text-base sm:text-lg md:text-xl font-bold tracking-wide text-parchment-50 leading-tight">
+                        Jejak Angin Nusantara: Masuknya Islam ke Sumatera
+                    </h1>
+                    <p class="text-xs text-parchment-300 font-medium">
+                        Komik Sejarah Masuknya Islam di Nusantara melalui Jalur Perdagangan
+                    </p>
+                </div>
+            </div>
+
+            <!-- Kontrol Mode Baca & Fitur Cepat -->
+            <div class="flex items-center gap-2 ml-auto sm:ml-0">
+                <!-- Toggle Mode Baca: Halaman vs Gulir (Webtoon) -->
+                <div class="bg-maritime-800 p-1 rounded-xl border border-parchment-300/20 flex items-center" role="group" aria-label="Mode Baca">
+                    <button id="btnModeSlide" onclick="setReadMode('slide')" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 bg-spice-500 text-white shadow">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="4" y="3" width="16" height="18" rx="2" />
+                            <path d="M9 12h6" />
+                        </svg>
+                        <span>Halaman</span>
+                    </button>
+                    <button id="btnModeWebtoon" onclick="setReadMode('webtoon')" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 text-parchment-200 hover:text-white">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                        </svg>
+                        <span>Gulir</span>
+                    </button>
+                </div>
+
+                <!-- Tombol Ringkasan Materi & Glosarium -->
+                <button onclick="toggleHistoryModal(true)" class="px-3 py-2 rounded-xl bg-parchment-100 hover:bg-white text-maritime-900 font-semibold text-xs sm:text-sm transition-all shadow flex items-center gap-1.5 border border-parchment-300 active:scale-95">
+                    <svg class="w-4 h-4 text-spice-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span class="hidden sm:inline">Teori &amp; Glosarium</span>
+                    <span class="sm:hidden">Teori</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bar Indikator Progres Baca -->
+        <div class="w-full h-1.5 bg-maritime-800">
+            <div id="readingProgressBar" class="h-full bg-gradient-to-r from-spice-500 to-amber-400 transition-all duration-300" style="width: 25%;"></div>
+        </div>
+    </header>
+
+    <!-- ==================== AREA UTAMA PEMBACA KOMIK ==================== -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 py-5 sm:py-8 flex flex-col gap-6">
+
+        <!-- Bilah Informasi Halaman Aktif & Petunjuk Gestur -->
+        <div class="bg-parchment-50/95 border border-parchment-300 rounded-2xl p-3.5 sm:px-5 shadow-sm flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <div class="flex items-center gap-2">
+                    <span id="badgePageNumber" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-maritime-800 text-parchment-50">
+                        Halaman 1 dari 4
+                    </span>
+                    <span class="text-xs font-semibold text-spice-600 uppercase tracking-wider">
+                        Babak Perdagangan &amp; Akulturasi
+                    </span>
+                </div>
+                <h2 id="currentPageTitle" class="text-base sm:text-lg font-bold text-parchment-900 mt-1">
+                    Gerbang Samudra di Ujung Sumatera
+                </h2>
+            </div>
+
+            <!-- Tab Pemilih Halaman Cepat (1 - 4) + Tombol Perbesar -->
+            <div class="flex flex-wrap items-center gap-2">
+                <div id="topPageTabs" class="flex items-center bg-parchment-100 p-1 rounded-xl border border-parchment-300" role="tablist" aria-label="Pilih Halaman">
+                    <!-- Diisi lewat JS -->
+                </div>
+                <button onclick="openZoomViewer(currentPageIndex)" class="px-3 py-2 rounded-xl bg-maritime-700 hover:bg-maritime-800 text-white text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 shadow-sm active:scale-95" title="Perbesar & Layar Penuh">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                    </svg>
+                    <span>Perbesar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== TAMPILAN 1: MODE HALAMAN (SLIDE / SWIPE) ==================== -->
+        <section id="slideReaderView" class="flex flex-col items-center gap-4">
+            <!-- Kontainer Kanvas Komik (Mendukung Swipe Touch & Klik Zoom) -->
+            <div id="swipeContainer" class="relative w-full max-w-2xl bg-parchment-50 p-2 sm:p-3 rounded-2xl border-2 border-parchment-300 shadow-xl overflow-hidden no-select group">
+                
+                <!-- Gambar Halaman Komik -->
+                <div class="relative rounded-xl overflow-hidden bg-parchment-200 flex items-center justify-center min-h-[420px] sm:min-h-[600px]">
+                    <img 
+                        id="slideComicImage" 
+                        src="https://i.ibb.co.com/k6c5JCbN/hal-1.jpg" 
+                        alt="Halaman 1 Komik Jejak Angin Nusantara"
+                        onclick="openZoomViewer(currentPageIndex)"
+                        onerror="handleImageFallback(this, 0)"
+                        class="w-full h-auto object-contain cursor-zoom-in transition-transform duration-300 animate-page-enter"
+                    />
+
+                    <!-- Tombol Navigasi Mengambang di Sisi Kiri & Kanan (Desktop & Tablet) -->
+                    <button id="floatPrevBtn" onclick="prevPage()" aria-label="Halaman Sebelumnya" class="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-maritime-900/80 hover:bg-maritime-900 text-white items-center justify-center shadow-lg backdrop-blur-sm transition-all opacity-85 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button id="floatNextBtn" onclick="nextPage()" aria-label="Halaman Selanjutnya" class="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-maritime-900/80 hover:bg-maritime-900 text-white items-center justify-center shadow-lg backdrop-blur-sm transition-all opacity-85 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                    <!-- Petunjuk Tap Zoom di Pojok Bawah Gambar -->
+                    <button onclick="openZoomViewer(currentPageIndex)" class="absolute bottom-3 right-3 px-3 py-1.5 rounded-full bg-parchment-900/85 text-parchment-50 text-xs font-medium backdrop-blur-sm flex items-center gap-1.5 shadow hover:bg-parchment-900 transition">
+                        <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                        </svg>
+                        <span>Ketuk gambar untuk memperbesar</span>
+                    </button>
+                </div>
+
+                <!-- Ringkasan Singkat Halaman di Bawah Gambar -->
+                <div class="mt-3 px-2 py-1.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm text-parchment-800">
+                    <p id="currentPageSummary" class="leading-relaxed">
+                        Kapal dagang berlabuh di pesisir Sumatera; saudagar Gujarat menawarkan kain sutra dan bertransaksi menggunakan koin dirham.
+                    </p>
+                </div>
+
+                <!-- Laci Lipat (Collapsible Drawer): Catatan Sejarah & Analisis Panel -->
+                <div class="mt-2 border-t border-parchment-200 pt-2.5 px-1">
+                    <button onclick="toggleAnalysisDrawer()" class="w-full py-2.5 px-3.5 rounded-xl bg-maritime-900/5 hover:bg-maritime-900/10 border border-maritime-800/20 text-maritime-900 text-xs sm:text-sm font-bold flex items-center justify-between transition">
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-spice-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                            <span>Catatan Sejarah &amp; Analisis Panel (Halaman <span id="drawerPageNum">1</span>)</span>
+                        </span>
+                        <svg id="drawerChevron" class="w-4 h-4 text-maritime-800 transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- Isi Laci Catatan Sejarah & Transkrip Dialog -->
+                    <div id="analysisDrawerContent" class="mt-2.5 space-y-3 text-xs sm:text-sm text-parchment-900 bg-white/90 rounded-xl p-3.5 sm:p-4 border border-parchment-300 shadow-inner">
+                        <!-- Diisi secara dinamis melalui JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kontrol Navigasi Bawah (Ramah Sentuhan Jempol di HP) -->
+            <div class="w-full max-w-2xl flex items-center justify-between gap-3">
+                <button id="btnPrevPage" onclick="prevPage()" class="flex-1 py-3 px-4 rounded-2xl bg-parchment-50 hover:bg-parchment-200 disabled:opacity-40 disabled:pointer-events-none border border-parchment-300 text-parchment-900 font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span>Sebelumnya</span>
+                </button>
+
+                <div class="px-4 py-3 rounded-2xl bg-maritime-800 text-parchment-50 font-bold text-sm shadow-inner shrink-0">
+                    <span id="counterText">1 / 4</span>
+                </div>
+
+                <button id="btnNextPage" onclick="nextPage()" class="flex-1 py-3 px-4 rounded-2xl bg-spice-500 hover:bg-spice-600 disabled:opacity-40 disabled:pointer-events-none text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-95">
+                    <span>Selanjutnya</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <p class="text-xs text-parchment-800/75 text-center">
+                Tips: Geser layar (swipe) kiri/kanan di HP atau gunakan tombol panah <kbd class="px-1.5 py-0.5 bg-parchment-200 rounded border border-parchment-300 font-mono text-[11px]">&larr;</kbd> <kbd class="px-1.5 py-0.5 bg-parchment-200 rounded border border-parchment-300 font-mono text-[11px]">&rarr;</kbd> di keyboard.
+            </p>
+        </section>
+
+        <!-- ==================== TAMPILAN 2: MODE GULIR VERTIKAL (WEBTOON) ==================== -->
+        <section id="webtoonReaderView" class="hidden flex-col items-center gap-6 max-w-2xl mx-auto w-full">
+            <!-- Diisi secara dinamis melalui JavaScript -->
+        </section>
+
+        <!-- ==================== NAVIGASI THUMBNAIL / DAFTAR HALAMAN CEPAT ==================== -->
+        <section class="bg-parchment-50 border border-parchment-300 rounded-2xl p-4 sm:p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-bold text-parchment-900 uppercase tracking-wider flex items-center gap-2">
+                    <svg class="w-4 h-4 text-spice-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Navigasi Cepat Halaman
+                </h3>
+                <span class="text-xs text-parchment-800">Pilih halaman untuk melompat</span>
+            </div>
+
+            <div id="thumbnailGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <!-- Thumbnail dirender lewat JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-maritime-900 text-parchment-300 py-5 px-4 mt-8 border-t border-spice-500/30">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-center sm:text-left">
+            <div>
+                <p class="font-semibold text-parchment-100">Jejak Angin Nusantara: Masuknya Islam ke Sumatera</p>
+                <p class="text-parchment-300/80 mt-0.5">Media Pembelajaran Interaktif Sejarah Kebudayaan Islam &amp; Sejarah Indonesia</p>
+            </div>
+            <button onclick="toggleHistoryModal(true)" class="px-4 py-2 rounded-xl bg-maritime-800 hover:bg-maritime-700 text-parchment-100 border border-parchment-300/20 font-medium transition">
+                Buka Glosarium &amp; Teori Masuknya Islam
+            </button>
+        </div>
+    </footer>
+
+    <!-- ==================== MODAL 1: ZOOM / FULLSCREEN IMAGE VIEWER ==================== -->
+    <div id="zoomModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex flex-col">
+        <!-- Toolbar Atas Zoom Viewer -->
+        <div class="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-5 py-2.5 sm:py-3 bg-maritime-900/95 text-white border-b border-white/15 shadow-lg z-10">
+            <!-- Tombol Keluar Layar Penuh dengan Teks Jelas (Selalu Terlihat di HP & Desktop) -->
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <button onclick="closeZoomViewer()" class="px-3 sm:px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 active:scale-95 text-white text-xs sm:text-sm font-bold transition shadow-md flex items-center gap-1.5 shrink-0 border border-red-400/40" title="Keluar dari Layar Penuh (Esc)">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <span>Keluar Layar Penuh</span>
+                </button>
+                <span id="zoomModalTitle" class="text-xs sm:text-sm font-semibold text-parchment-100 truncate hidden md:inline max-w-xs lg:max-w-md">
+                    Halaman 1: Gerbang Samudra
+                </span>
+            </div>
+
+            <!-- Kontrol Tingkat Perbesaran -->
+            <div class="flex items-center gap-1.5 sm:gap-2 ml-auto">
+                <button onclick="adjustZoom(-0.35)" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition" title="Perkecil (Zoom Out)">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                    </svg>
+                </button>
+                <span id="zoomLevelLabel" class="text-xs font-mono font-bold px-2 py-1 bg-white/10 rounded-lg min-w-[48px] sm:min-w-[52px] text-center">
+                    100%
+                </span>
+                <button onclick="adjustZoom(0.35)" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition" title="Perbesar (Zoom In)">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                    </svg>
+                </button>
+                <button onclick="resetZoom()" class="px-2.5 py-1.5 rounded-xl bg-spice-500 hover:bg-spice-600 text-xs font-semibold transition">
+                    Reset
+                </button>
+                <button onclick="toggleFullScreenAPI()" class="hidden sm:flex p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition" title="Layar Penuh Browser (F11)">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Area Gambar yang Bisa Digeser (Pan), Pinch-to-Zoom, Ketuk Latar Keluar, & Swipe Bawah untuk Keluar -->
+        <div id="zoomViewport" onclick="handleZoomBackdropClick(event)" class="flex-1 overflow-auto flex items-center justify-center p-4 cursor-zoom-out">
+            <img 
+                id="zoomModalImage" 
+                src="https://i.ibb.co.com/k6c5JCbN/hal-1.jpg" 
+                alt="Tampilan Perbesar Komik" 
+                ondblclick="toggleDoubleTapZoom()"
+                class="max-w-full max-h-full object-contain transition-transform duration-150 origin-center rounded-lg shadow-2xl cursor-zoom-in"
+            />
+        </div>
+
+        <!-- Footer Petunjuk & Navigasi Halaman di Mode Fullscreen -->
+        <div class="px-3 sm:px-4 py-2.5 bg-maritime-900/95 text-parchment-200 text-xs flex items-center justify-between gap-2 border-t border-white/15">
+            <button onclick="changeZoomPage(-1)" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 font-medium shrink-0">
+                &larr; Hal. Sebelumnya
+            </button>
+            <span class="text-center text-[11px] sm:text-xs text-parchment-300">
+                <span class="sm:hidden">Usap ke bawah atau ketuk area gelap untuk keluar</span>
+                <span class="hidden sm:inline">Cubit layar / klik ganda untuk zoom &bull; Klik latar gelap, usap bawah, atau tekan <kbd class="px-1.5 py-0.5 bg-white/15 rounded font-mono text-[10px]">Esc</kbd> untuk keluar</span>
+            </span>
+            <button onclick="changeZoomPage(1)" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 font-medium shrink-0">
+                Hal. Selanjutnya &rarr;
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 2: CATATAN SEJARAH & GLOSARIUM ==================== -->
+    <div id="historyModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
+        <div class="bg-parchment-50 border-2 border-parchment-300 rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-page-enter">
+            
+            <!-- Header Modal Sejarah -->
+            <div class="bg-maritime-900 text-parchment-50 px-5 py-4 flex items-center justify-between border-b border-spice-500/40">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-lg bg-spice-500 flex items-center justify-center text-white font-bold">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </span>
+                    <div>
+                        <h3 class="font-serifTitle text-base sm:text-lg font-bold">Catatan Sejarah &amp; Glosarium</h3>
+                        <p class="text-xs text-parchment-300">Konteks Historis Masuknya Islam ke Nusantara</p>
+                    </div>
+                </div>
+                <button onclick="toggleHistoryModal(false)" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition" aria-label="Tutup Modal">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Tab Navigasi di Dalam Modal -->
+            <div class="flex border-b border-parchment-300 bg-parchment-100 px-4 pt-2 gap-2">
+                <button id="tabPageContext" onclick="switchHistoryTab('page')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-t-xl border-t border-x border-parchment-300 bg-parchment-50 text-maritime-900">
+                    Fakta Halaman <span id="tabPageNumLabel">1</span>
+                </button>
+                <button id="tabAllGlossary" onclick="switchHistoryTab('glossary')" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-t-xl text-parchment-800 hover:text-maritime-900">
+                    Teori &amp; Glosarium Lengkap
+                </button>
+            </div>
+
+            <!-- Konten Modal Scrollable -->
+            <div id="historyModalBody" class="p-5 overflow-y-auto space-y-4 text-sm text-parchment-900 leading-relaxed">
+                <!-- Konten dirender dinamis lewat JavaScript -->
+            </div>
+
+            <!-- Footer Modal -->
+            <div class="px-5 py-3 bg-parchment-100 border-t border-parchment-300 flex items-center justify-between">
+                <span class="text-xs text-parchment-800">Siap digunakan untuk bahan presentasi kelas</span>
+                <button onclick="toggleHistoryModal(false)" class="px-4 py-2 rounded-xl bg-maritime-800 hover:bg-maritime-900 text-white text-xs sm:text-sm font-semibold transition">
+                    Kembali Membaca
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPT LOGIKA INTERAKTIF ==================== -->
+    <script>
+        /**
+         * Data utama 4 halaman komik menggunakan direct link ImgBB yang telah terverifikasi,
+         * dilengkapi analisis sejarah per halaman serta transkrip dialog panel dalam Bahasa Indonesia.
+         */
+        const comicPages = [
+            {
+                pageNumber: 1,
+                title: "Gerbang Samudra di Ujung Sumatera",
+                image: "https://i.ibb.co.com/k6c5JCbN/hal-1.jpg",
+                summary: "Kapal dagang berlabuh di pesisir Pulau Sumatera (Barus/Samudera Pasai); saudagar muslim dari Gujarat menawarkan kain sutra dan bertransaksi menggunakan koin dirham.",
+                historicalFocus: "Jalur Perdagangan Maritim, Pulau Sumatera, Teori Gujarat & Mekkah, serta Mata Uang Dirham",
+                panels: [
+                    { panel: "Panel 1", text: "Narasi: 'Abad ke-13 Masehi. Kapal dagang melintasi samudra menuju Pulau Sumatera.' — Awak Kapal: 'Daratan terlihat! Bandar Sumatera ada di depan haluan!'" },
+                    { panel: "Panel 2", text: "Malik: 'Salam sejahtera, Saudara. Kami membawa dagangan dari negeri seberang.'" },
+                    { panel: "Panel 3", text: "Narasi: 'Pedagang dari Gujarat menawarkan kain sutra halus.' — Malik: 'Ini kain sutra pilihan dari Gujarat, Tuan.'" },
+                    { panel: "Panel 4", text: "Pedagang Lokal: 'Saya ambil tiga gulung! Mari kita hitung dengan koin dirham ini.' — Narasi: 'Dari pertukaran kain sutra dan dirham, benih peradaban Islam bersemi di Sumatera.'" }
+                ],
+                keyPoints: [
+                    {
+                        term: "Pulau Sumatera sebagai Titik Awal (Barus & Samudera Pasai)",
+                        desc: "Pesisir barat dan utara Sumatera—khususnya Barus (Fansur), Perlak, dan Samudera Pasai—adalah pintu gerbang pertama masuknya Islam karena letaknya yang strategis di Selat Malaka pada jalur pelayaran India–Tiongkok."
+                    },
+                    {
+                        term: "Teori Gujarat & Teori Mekkah",
+                        desc: "Teori Gujarat menjelaskan peran besar saudagar muslim dari Gujarat (India) sekitar abad ke-13 M yang memperdagangkan kain sutra halus di pesisir Sumatera. Sementara Teori Mekkah menegaskan pedagang Arab telah singgah di pesisir Sumatera sejak abad ke-7 M."
+                    },
+                    {
+                        term: "Transaksi Koin Dirham",
+                        desc: "Dirham adalah mata uang perak standar perdagangan dunia Islam yang diterima luas di bandar-bandar Sumatera sebelum dan selama berdirinya Kesultanan Samudera Pasai."
+                    }
+                ]
+            },
+            {
+                pageNumber: 2,
+                title: "Rempah dan Wewangian dari Bumi Sumatera",
+                image: "https://i.ibb.co.com/5VzfT8T/hal-2.jpg",
+                summary: "Saudagar Gujarat mendatangi penjual lokal Sumatera untuk membeli kapur barus, lada, dan kemenyan dengan sikap ramah serta menimbang secara adil.",
+                historicalFocus: "Komoditas Kapur Barus, Lada, Kemenyan & Etika Bisnis Jujur / Anti-Riba",
+                panels: [
+                    { panel: "Panel 1", text: "Narasi: 'Tak hanya menjual, para saudagar juga mencari kekayaan alam Nusantara.' — Malik: 'Permisi, Saudara. Boleh saya melihat hasil bumi terbaik yang Tuan miliki hari ini?' — Penjual Lokal: 'Silakan, Tuan Saudagar! Semua baru saja turun dari pedalaman Sumatera.'" },
+                    { panel: "Panel 2", text: "Penjual Lokal: 'Di sini ada kapur barus dari Barus, lada pilihan, dan kemenyan wangi. Semuanya kualitas utama.' — Malik: 'Masyaallah, aromanya sangat kuat dan murni! Barang-barang ini sangat dicari di Gujarat hingga ke Tanah Arab.'" },
+                    { panel: "Panel 3", text: "Narasi: 'Sikap ramah, tutur kata yang santun, serta pantang merugikan penjual membuat warga lokal menaruh hormat.' — Malik: 'Takarannya masih lebih berat sedikit di pihak saya, Tuan. Saya tambah keping dirhamnya agar adil dan tidak ada yang dirugikan.' — Penjual Lokal: 'Baru kali ini ada saudagar asing yang menimbang seadil dan seramah Tuan!'" },
+                    { panel: "Panel 4", text: "Penjual Lokal: 'Kalau Tuan masih menunggu angin muson berganti, singgahlah kembali ke kedai kami.' — Malik: 'Tentu, Saudara. Bagi kami, perniagaan bukan sekadar untung, melainkan menjalin persaudaraan.' — Narasi: 'Kejujuran dan keramahan inilah yang perlahan membuka pintu hati masyarakat Sumatera terhadap nilai-nilai Islam.'" }
+                ],
+                keyPoints: [
+                    {
+                        term: "Komoditas Khas: Kapur Barus, Lada, dan Kemenyan",
+                        desc: "Saudagar muslim membeli komoditas unggulan Sumatera bernilai tinggi: kapur barus (kamper dari Barus), lada hitam, dan getah kemenyan wangi untuk dipasarkan ke India dan Timur Tengah."
+                    },
+                    {
+                        term: "Etika Bisnis Jujur & Larangan Riba",
+                        desc: "Islam melarang keras kecurangan timbangan (tatfif) dan riba. Kejujuran dalam menakar barang serta keramahan tutur kata saudagar muslim menjadi daya tarik dakwah tanpa paksaan."
+                    }
+                ]
+            },
+            {
+                pageNumber: 3,
+                title: "Menetap di Kampung Pesisir & Pesona Kebersihan",
+                image: "https://i.ibb.co.com/YFwgbGGd/hal-3.jpg",
+                summary: "Sambil menunggu angin muson berganti, para pendatang muslim menetap di perkampungan pesisir dan rutin berwudu—membuat pedagang lokal dan putrinya kagum.",
+                historicalFocus: "Angin Muson, Perkampungan Muslim (Pekojan), & Kebiasaan Berwudu / Kebersihan",
+                panels: [
+                    { panel: "Panel 1", text: "Narasi: 'Sambil menunggu arah angin muson berganti, para saudagar muslim memilih menetap sementara dan membentuk perkampungan di dekat pelabuhan.' — Rekan: 'Angin belum juga bertiup ke barat, Malik. Masih ada beberapa bulan sebelum kita bisa berlayar pulang.' — Malik: 'Tidak mengapa. Selama di sini, mari kita jaga kampung ini tetap bersih dan hidup rukun dengan warga setempat.'" },
+                    { panel: "Panel 2", text: "Narasi: 'Setiap lima waktu, mereka selalu menyucikan diri dengan berwudu sebelum menunaikan salat.' — Malik: 'Alhamdulillah... segarnya air ini menenangkan pikiran setelah seharian berniaga.'" },
+                    { panel: "Panel 3", text: "Putri Pedagang: 'Ayah, lihat saudagar yang jujur di pasar tadi... mengapa mereka membasuh wajah dan tangan berkali-kali sebersih itu sebelum berdoa?' — Ayah: 'Ayah juga baru melihatnya, Nak. Lingkungan sekitar tempat tinggal mereka pun selalu bersih dan tertata.'" },
+                    { panel: "Panel 4", text: "Malik: 'Salam sejahtera, Tuan. Maaf membuat Tuan dan Putri menunggu. Ada yang bisa saya bantu?' — Ayah: 'Tidak perlu sungkan, Malik. Kami hanya lewat hendak mengantar buah tangan, dan terkesan melihat betapa bersihnya adat kalian.' — Narasi: 'Ketertarikan warga lokal pun tumbuh—bukan karena paksaan, melainkan dari keteladanan hidup sehari-hari.'" }
+                ],
+                keyPoints: [
+                    {
+                        term: "Menetap Menunggu Angin Muson",
+                        desc: "Pelayaran kuno bergantung pada arah angin muson. Saudagar asing menetap berbulan-bulan di sekitar pelabuhan dan membentuk pemukiman muslim (Pekojan) yang rapi."
+                    },
+                    {
+                        term: "Budaya Kebersihan & Syariat Wudu",
+                        desc: "Kebiasaan menyucikan wajah, tangan, dan kaki dengan air bersih lima kali sehari sebelum salat menampilkan citra kebersihan diri dan ketenangan batin yang memikat warga pesisir."
+                    }
+                ]
+            },
+            {
+                pageNumber: 4,
+                title: "Ikatan Dua Budaya di Bandar Sumatera",
+                image: "https://i.ibb.co.com/qFy6JbXV/hal-4.jpg",
+                summary: "Ketertarikan pada kebersihan diri serta sikap bersosial yang santun dan setara tanpa memandang derajat berujung pada restu keluarga dan pernikahan yang melahirkan generasi muslim awal.",
+                historicalFocus: "Kesetaraan Tanpa Kasta, Jalur Perkawinan, & Akulturasi Budaya",
+                panels: [
+                    { panel: "Panel 1", text: "Narasi: 'Kebersihan diri serta cara bergaul yang santun dan setara tanpa memandang derajat memikat hati sang putri dan keluarganya.' — Putri Pedagang: 'Ia selalu menjaga kebersihan dan memuliakan siapa saja tanpa memandang derajat...'" },
+                    { panel: "Panel 2", text: "Malik: 'Dengan segala kerendahan hati, izinkan saya meminang putri Tuan.' — Ayah: 'Akhlak dan budi pekertimu sudah menjadi bukti, Malik. Ayah merestui kalian.'" },
+                    { panel: "Panel 3", text: "Penghulu: 'Sah! Semoga Allah memberkahi ikatan keluarga baru ini.' — Warga: 'Alhamdulillah! Selamat berbahagia!' — Narasi: 'Melalui jalur perdagangan dan perkawinan yang damai, lahirlah generasi muslim pertama di Nusantara.'" }
+                ],
+                keyPoints: [
+                    {
+                        term: "Kesetaraan Manusia (Tanpa Sistem Kasta)",
+                        desc: "Ajaran Islam memuliakan semua manusia tanpa membedakan kasta atau status sosial. Saudagar kaya duduk sejajar dan beribadah bersama pekerja pelabuhan, sehingga mudah diterima masyarakat Nusantara."
+                    },
+                    {
+                        term: "Jalur Perkawinan & Akulturasi Budaya",
+                        desc: "Saudagar muslim yang berakhlak mulia mendapat restu menikahi putri pedagang maupun bangsawan lokal. Busana adat pengantin pesisir berpadu harmonis dengan nilai-nilai Islam dan melahirkan keluarga muslim awal di Nusantara."
+                    }
+                ]
+            }
+        ];
+
+        // Glosarium komprehensif untuk modal Teori & Glosarium
+        const fullGlossary = [
+            {
+                term: "Teori Mekkah (Arab)",
+                desc: "Menyatakan bahwa Islam masuk langsung dari Timur Tengah (Arab/Mesir) ke pesisir Sumatera sejak abad ke-7 M melalui jalur perdagangan maritim, dibuktikan dengan catatan pelaut Arab dan pemukiman kuno di Barus."
+            },
+            {
+                term: "Teori Gujarat",
+                desc: "Menyatakan bahwa Islam berkembang pesat di Nusantara pada abad ke-13 M melalui para pedagang muslim dari Gujarat, India, yang membawa komoditas kain sutra serta berinteraksi aktif di bandar Samudera Pasai."
+            },
+            {
+                term: "Barus & Samudera Pasai (Sumatera)",
+                desc: "Bandar pelabuhan paling awal di pesisir barat dan utara Sumatera yang menjadi pintu gerbang masuknya Islam sekaligus pusat ekspor kapur barus dan lada dunia."
+            },
+            {
+                term: "Dirham",
+                desc: "Mata uang koin perak standar dalam dunia perdagangan Islam yang digunakan di pelabuhan-pelabuhan Sumatera sebelum dan selama berdirinya Kesultanan Samudera Pasai."
+            },
+            {
+                term: "Wudu & Kebersihan",
+                desc: "Tata cara menyucikan anggota tubuh menggunakan air bersih sebelum menunaikan salat lima waktu, yang menjadi teladan nyata pola hidup bersih umat Islam di lingkungan pelabuhan."
+            },
+            {
+                term: "Saluran Perkawinan & Kesetaraan",
+                desc: "Penyebaran Islam secara damai melalui pernikahan saudagar muslim dengan putri penduduk lokal yang tertarik pada kejujuran, kebersihan, dan prinsip kesetaraan derajat tanpa kasta."
+            }
+        ];
+
+        // State Aplikasi
+        let currentPageIndex = 0;
+        let readMode = 'slide'; // 'slide' atau 'webtoon'
+        let currentZoom = 1;
+        let activeHistoryTab = 'page';
+        let isDrawerOpen = true; // Terbuka secara default agar analisis sejarah & dialog mudah dibaca
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTopPageTabs();
+            renderThumbnails();
+            renderWebtoonView();
+            updateSlideUI();
+            setupSwipeGestures();
+            setupPinchZoomGestures();
+            setupKeyboardNavigation();
+        });
+
+        /**
+         * Mengubah mode baca antara 'slide' (Halaman per Halaman) dan 'webtoon' (Gulir Vertikal)
+         */
+        function setReadMode(mode) {
+            readMode = mode;
+            const slideView = document.getElementById('slideReaderView');
+            const webtoonView = document.getElementById('webtoonReaderView');
+            const btnSlide = document.getElementById('btnModeSlide');
+            const btnWebtoon = document.getElementById('btnModeWebtoon');
+
+            if (mode === 'slide') {
+                slideView.classList.remove('hidden');
+                webtoonView.classList.add('hidden');
+                webtoonView.classList.remove('flex');
+
+                btnSlide.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 bg-spice-500 text-white shadow";
+                btnWebtoon.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 text-parchment-200 hover:text-white";
+                updateSlideUI();
+            } else {
+                slideView.classList.add('hidden');
+                webtoonView.classList.remove('hidden');
+                webtoonView.classList.add('flex');
+
+                btnWebtoon.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 bg-spice-500 text-white shadow";
+                btnSlide.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 text-parchment-200 hover:text-white";
+                document.getElementById('readingProgressBar').style.width = '100%';
+            }
+        }
+
+        /**
+         * Fallback jika koneksi internet terputus
+         */
+        function handleImageFallback(imgElement, pageIdx) {
+            const pageNum = pageIdx + 1;
+            imgElement.onerror = null;
+            imgElement.src = `https://placehold.co/800x1120/E8DEC8/2E2318?text=Halaman+${pageNum}%0A(Periksa+Koneksi+Internet)`;
+        }
+
+        /**
+         * Membuka atau menutup laci Catatan Sejarah & Analisis Panel
+         */
+        function toggleAnalysisDrawer() {
+            isDrawerOpen = !isDrawerOpen;
+            const content = document.getElementById('analysisDrawerContent');
+            const chevron = document.getElementById('drawerChevron');
+            if (isDrawerOpen) {
+                content.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
+        /**
+         * Render tab pemilih halaman 1–4 pada bilah atas
+         */
+        function renderTopPageTabs() {
+            const tabContainer = document.getElementById('topPageTabs');
+            if (!tabContainer) return;
+            tabContainer.innerHTML = comicPages.map((page, idx) => {
+                const active = idx === currentPageIndex;
+                return `
+                    <button 
+                        onclick="goToPage(${idx})" 
+                        role="tab"
+                        aria-selected="${active}"
+                        class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                            active 
+                            ? 'bg-maritime-800 text-white shadow-sm' 
+                            : 'text-parchment-800 hover:bg-parchment-200'
+                        }"
+                    >
+                        Hal. ${page.pageNumber}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        /**
+         * Memperbarui tampilan UI pada Mode Halaman (Slide)
+         */
+        function updateSlideUI() {
+            const page = comicPages[currentPageIndex];
+            const imgEl = document.getElementById('slideComicImage');
+
+            // Reset animasi gambar
+            imgEl.classList.remove('animate-page-enter');
+            void imgEl.offsetWidth; // Trigger reflow
+            imgEl.src = page.image;
+            imgEl.alt = `Halaman ${page.pageNumber}: ${page.title}`;
+            imgEl.onerror = () => handleImageFallback(imgEl, currentPageIndex);
+            imgEl.classList.add('animate-page-enter');
+
+            // Update teks metadata
+            document.getElementById('badgePageNumber').textContent = `Halaman ${page.pageNumber} dari ${comicPages.length}`;
+            document.getElementById('currentPageTitle').textContent = page.title;
+            document.getElementById('currentPageSummary').textContent = page.summary;
+            document.getElementById('counterText').textContent = `${page.pageNumber} / ${comicPages.length}`;
+            document.getElementById('drawerPageNum').textContent = page.pageNumber;
+
+            // Update isi Laci Catatan Sejarah & Analisis Panel
+            const drawerBox = document.getElementById('analysisDrawerContent');
+            if (drawerBox) {
+                drawerBox.innerHTML = `
+                    <div class="bg-parchment-100/90 border border-parchment-300 rounded-xl p-3">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-spice-600">Konteks Sejarah Halaman ${page.pageNumber}</span>
+                        <h4 class="font-bold text-maritime-900 text-xs sm:text-sm mt-0.5">${page.historicalFocus}</h4>
+                        <div class="mt-2 space-y-2">
+                            ${page.keyPoints.map(pt => `
+                                <div class="bg-white rounded-lg p-2.5 border border-parchment-200">
+                                    <p class="font-bold text-maritime-800 text-xs">${pt.term}</p>
+                                    <p class="text-parchment-800 text-xs mt-0.5 leading-relaxed">${pt.desc}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-maritime-800 mb-1.5">Transkrip Dialog &amp; Narasi Panel</p>
+                        <div class="space-y-1.5">
+                            ${page.panels.map(p => `
+                                <div class="p-2 rounded-lg bg-parchment-50 border border-parchment-200 text-xs leading-relaxed">
+                                    <span class="font-bold text-spice-600">${p.panel}:</span>
+                                    <span class="text-parchment-900 ml-1">${p.text}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Update progres bar
+            const progressPercent = ((currentPageIndex + 1) / comicPages.length) * 100;
+            document.getElementById('readingProgressBar').style.width = `${progressPercent}%`;
+
+            // Update status tombol Sebelumnya / Selanjutnya
+            const isFirst = currentPageIndex === 0;
+            const isLast = currentPageIndex === comicPages.length - 1;
+
+            document.getElementById('btnPrevPage').disabled = isFirst;
+            document.getElementById('floatPrevBtn').disabled = isFirst;
+            document.getElementById('btnNextPage').disabled = isLast;
+            document.getElementById('floatNextBtn').disabled = isLast;
+
+            // Update tab atas & sorotan thumbnail aktif
+            renderTopPageTabs();
+            renderThumbnails();
+        }
+
+        /**
+         * Navigasi Halaman
+         */
+        function goToPage(index) {
+            if (index < 0 || index >= comicPages.length) return;
+            currentPageIndex = index;
+
+            if (readMode === 'webtoon') {
+                const targetCard = document.getElementById(`webtoon-page-${index}`);
+                if (targetCard) {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                renderTopPageTabs();
+                renderThumbnails();
+            } else {
+                updateSlideUI();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function prevPage() {
+            if (currentPageIndex > 0) {
+                goToPage(currentPageIndex - 1);
+            }
+        }
+
+        function nextPage() {
+            if (currentPageIndex < comicPages.length - 1) {
+                goToPage(currentPageIndex + 1);
+            }
+        }
+
+        /**
+         * Render daftar thumbnail navigasi cepat
+         */
+        function renderThumbnails() {
+            const grid = document.getElementById('thumbnailGrid');
+            grid.innerHTML = comicPages.map((page, idx) => {
+                const isActive = idx === currentPageIndex;
+                return `
+                    <button 
+                        onclick="goToPage(${idx})" 
+                        class="group text-left rounded-xl p-2 transition-all border-2 flex flex-col gap-2 ${
+                            isActive 
+                            ? 'bg-maritime-900 text-parchment-50 border-spice-500 shadow-md' 
+                            : 'bg-parchment-100 hover:bg-parchment-200 text-parchment-900 border-parchment-300'
+                        }"
+                    >
+                        <div class="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-parchment-200">
+                            <img 
+                                src="${page.image}" 
+                                alt="Thumbnail Halaman ${page.pageNumber}" 
+                                onerror="handleImageFallback(this, ${idx})"
+                                class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md text-[11px] font-bold ${
+                                isActive ? 'bg-spice-500 text-white' : 'bg-maritime-900/80 text-white'
+                            }">
+                                Hal. ${page.pageNumber}
+                            </span>
+                        </div>
+                        <p class="text-xs font-semibold line-clamp-2 leading-snug px-0.5">
+                            ${page.title}
+                        </p>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        /**
+         * Render semua halaman secara vertikal untuk Mode Gulir (Webtoon)
+         */
+        function renderWebtoonView() {
+            const container = document.getElementById('webtoonReaderView');
+            container.innerHTML = comicPages.map((page, idx) => `
+                <article id="webtoon-page-${idx}" class="w-full bg-parchment-50 p-2.5 sm:p-4 rounded-2xl border-2 border-parchment-300 shadow-lg scroll-mt-24">
+                    <div class="flex items-center justify-between mb-2.5 px-1">
+                        <div>
+                            <span class="text-xs font-bold text-spice-600 uppercase">Halaman ${page.pageNumber}</span>
+                            <h3 class="text-sm sm:text-base font-bold text-parchment-900">${page.title}</h3>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="openPageHistory(${idx})" class="px-2.5 py-1.5 rounded-lg bg-parchment-200 hover:bg-parchment-300 text-parchment-900 text-xs font-semibold transition">
+                                Info Sejarah
+                            </button>
+                            <button onclick="openZoomViewer(${idx})" class="px-2.5 py-1.5 rounded-lg bg-maritime-800 hover:bg-maritime-900 text-white text-xs font-semibold transition">
+                                Perbesar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="rounded-xl overflow-hidden bg-parchment-200">
+                        <img 
+                            src="${page.image}" 
+                            alt="Halaman ${page.pageNumber}: ${page.title}" 
+                            onclick="openZoomViewer(${idx})"
+                            onerror="handleImageFallback(this, ${idx})"
+                            class="w-full h-auto object-contain cursor-zoom-in"
+                        />
+                    </div>
+                    <details class="mt-3 bg-parchment-100/80 rounded-xl border border-parchment-300 p-2.5 text-xs">
+                        <summary class="font-bold text-maritime-900 cursor-pointer select-none">
+                            Catatan Sejarah &amp; Transkrip Dialog Halaman ${page.pageNumber}
+                        </summary>
+                        <div class="mt-2 space-y-2 pt-2 border-t border-parchment-200">
+                            ${page.keyPoints.map(pt => `
+                                <p><strong class="text-maritime-800">${pt.term}:</strong> ${pt.desc}</p>
+                            `).join('')}
+                            <div class="pt-1 space-y-1">
+                                ${page.panels.map(p => `
+                                    <p class="text-parchment-800"><strong class="text-spice-600">${p.panel}:</strong> ${p.text}</p>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </details>
+                </article>
+            `).join('');
+        }
+
+        /**
+         * ==================== FITUR ZOOM, PINCH-TO-ZOOM & LAYAR PENUH ====================
+         */
+        let zoomModalPageIndex = 0;
+
+        function openZoomViewer(pageIdx) {
+            zoomModalPageIndex = pageIdx;
+            currentZoom = 1;
+            updateZoomModalContent();
+            document.getElementById('zoomModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeZoomViewer() {
+            document.getElementById('zoomModal').classList.add('hidden');
+            document.body.style.overflow = '';
+            currentZoom = 1;
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+
+        /**
+         * Menutup mode layar penuh ketika pengguna mengetuk/mengklik area gelap di luar gambar (saat zoom <= 1x)
+         */
+        function handleZoomBackdropClick(event) {
+            if (event.target.id === 'zoomViewport' && currentZoom <= 1.05) {
+                closeZoomViewer();
+            }
+        }
+
+        function updateZoomModalContent() {
+            const page = comicPages[zoomModalPageIndex];
+            const img = document.getElementById('zoomModalImage');
+            img.src = page.image;
+            img.onerror = () => handleImageFallback(img, zoomModalPageIndex);
+            document.getElementById('zoomModalTitle').textContent = `Halaman ${page.pageNumber}: ${page.title}`;
+            applyZoomTransform();
+        }
+
+        function adjustZoom(delta) {
+            currentZoom = Math.min(Math.max(0.75, currentZoom + delta), 3.0);
+            applyZoomTransform();
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoomTransform();
+        }
+
+        function toggleDoubleTapZoom() {
+            currentZoom = currentZoom > 1.1 ? 1 : 1.85;
+            applyZoomTransform();
+        }
+
+        function applyZoomTransform() {
+            const img = document.getElementById('zoomModalImage');
+            img.style.transform = `scale(${currentZoom})`;
+            document.getElementById('zoomLevelLabel').textContent = `${Math.round(currentZoom * 100)}%`;
+        }
+
+        function changeZoomPage(step) {
+            const nextIdx = zoomModalPageIndex + step;
+            if (nextIdx >= 0 && nextIdx < comicPages.length) {
+                zoomModalPageIndex = nextIdx;
+                currentPageIndex = nextIdx;
+                currentZoom = 1;
+                updateZoomModalContent();
+                updateSlideUI();
+            }
+        }
+
+        function toggleFullScreenAPI() {
+            const modal = document.getElementById('zoomModal');
+            if (!document.fullscreenElement) {
+                modal.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+
+        /**
+         * Dukungan cubit layar (Pinch-to-Zoom) 2 jari & gestur swipe ke bawah untuk keluar saat zoom 1x
+         */
+        function setupPinchZoomGestures() {
+            const viewport = document.getElementById('zoomViewport');
+            let initialPinchDistance = null;
+            let initialZoomAtPinch = 1;
+            let singleTouchStartX = 0;
+            let singleTouchStartY = 0;
+            let isPinching = false;
+
+            viewport.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2) {
+                    isPinching = true;
+                    const dx = e.touches[0].clientX - e.touches[1].clientX;
+                    const dy = e.touches[0].clientY - e.touches[1].clientY;
+                    initialPinchDistance = Math.hypot(dx, dy);
+                    initialZoomAtPinch = currentZoom;
+                } else if (e.touches.length === 1) {
+                    isPinching = false;
+                    singleTouchStartX = e.touches[0].clientX;
+                    singleTouchStartY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            viewport.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 2 && initialPinchDistance) {
+                    const dx = e.touches[0].clientX - e.touches[1].clientX;
+                    const dy = e.touches[0].clientY - e.touches[1].clientY;
+                    const currentDistance = Math.hypot(dx, dy);
+                    const scaleFactor = currentDistance / initialPinchDistance;
+                    currentZoom = Math.min(Math.max(0.75, initialZoomAtPinch * scaleFactor), 3.0);
+                    applyZoomTransform();
+                }
+            }, { passive: true });
+
+            viewport.addEventListener('touchend', (e) => {
+                if (!isPinching && e.changedTouches.length === 1 && currentZoom <= 1.05) {
+                    const diffX = e.changedTouches[0].clientX - singleTouchStartX;
+                    const diffY = e.changedTouches[0].clientY - singleTouchStartY;
+                    // Jika pengguna melakukan swipe ke bawah cukup jauh (> 85px) pada skala normal 1x, tutup layar penuh
+                    if (diffY > 85 && Math.abs(diffY) > Math.abs(diffX) * 1.4) {
+                        closeZoomViewer();
+                    }
+                }
+                if (e.touches.length === 0) {
+                    initialPinchDistance = null;
+                    isPinching = false;
+                }
+            }, { passive: true });
+        }
+
+        /**
+         * ==================== MODAL CATATAN SEJARAH & GLOSARIUM ====================
+         */
+        function openPageHistory(pageIdx) {
+            currentPageIndex = pageIdx;
+            updateSlideUI();
+            toggleHistoryModal(true);
+        }
+
+        function toggleHistoryModal(show) {
+            const modal = document.getElementById('historyModal');
+            if (show) {
+                activeHistoryTab = 'page';
+                renderHistoryModalBody();
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function switchHistoryTab(tab) {
+            activeHistoryTab = tab;
+            const btnPage = document.getElementById('tabPageContext');
+            const btnGlossary = document.getElementById('tabAllGlossary');
+
+            if (tab === 'page') {
+                btnPage.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-t-xl border-t border-x border-parchment-300 bg-parchment-50 text-maritime-900";
+                btnGlossary.className = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-t-xl text-parchment-800 hover:text-maritime-900";
+            } else {
+                btnGlossary.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-t-xl border-t border-x border-parchment-300 bg-parchment-50 text-maritime-900";
+                btnPage.className = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-t-xl text-parchment-800 hover:text-maritime-900";
+            }
+            renderHistoryModalBody();
+        }
+
+        function renderHistoryModalBody() {
+            const body = document.getElementById('historyModalBody');
+            const page = comicPages[currentPageIndex];
+            document.getElementById('tabPageNumLabel').textContent = page.pageNumber;
+
+            if (activeHistoryTab === 'page') {
+                body.innerHTML = `
+                    <div class="bg-maritime-900/5 border border-maritime-800/15 rounded-xl p-3.5">
+                        <span class="text-xs font-bold uppercase tracking-wider text-spice-600">Fokus Materi Halaman ${page.pageNumber}</span>
+                        <h4 class="text-base font-bold text-maritime-900 mt-0.5">${page.historicalFocus}</h4>
+                    </div>
+                    <div class="space-y-3">
+                        ${page.keyPoints.map(item => `
+                            <div class="bg-white border border-parchment-300 rounded-xl p-3.5 shadow-sm">
+                                <h5 class="font-bold text-maritime-800 text-sm flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-spice-500"></span>
+                                    ${item.term}
+                                </h5>
+                                <p class="text-parchment-800 text-xs sm:text-sm mt-1 leading-relaxed">
+                                    ${item.desc}
+                                </p>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                body.innerHTML = `
+                    <p class="text-xs sm:text-sm text-parchment-800">
+                        Rangkuman istilah penting dan landasan teori masuknya Islam ke Nusantara melalui jalur perdagangan maritim:
+                    </p>
+                    <div class="grid grid-cols-1 gap-3">
+                        ${fullGlossary.map(item => `
+                            <div class="bg-white border border-parchment-300 rounded-xl p-3.5 shadow-sm">
+                                <h5 class="font-bold text-maritime-900 text-sm">${item.term}</h5>
+                                <p class="text-parchment-800 text-xs sm:text-sm mt-1 leading-relaxed">${item.desc}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        /**
+         * ==================== GESTUR SENTUH (SWIPE HP) & KEYBOARD DESKTOP ====================
+         */
+        function setupSwipeGestures() {
+            const swipeArea = document.getElementById('swipeContainer');
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            swipeArea.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+
+            swipeArea.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
+                const diffX = touchEndX - touchStartX;
+                const diffY = touchEndY - touchStartY;
+
+                // Deteksi geseran horizontal yang dominan (minimal 45px)
+                if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+                    if (diffX < 0) {
+                        nextPage(); // Geser ke kiri -> Halaman selanjutnya
+                    } else {
+                        prevPage(); // Geser ke kanan -> Halaman sebelumnya
+                    }
+                }
+            }, { passive: true });
+        }
+
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                const isZoomOpen = !document.getElementById('zoomModal').classList.contains('hidden');
+                const isHistoryOpen = !document.getElementById('historyModal').classList.contains('hidden');
+
+                if (e.key === 'Escape') {
+                    if (isZoomOpen) closeZoomViewer();
+                    if (isHistoryOpen) toggleHistoryModal(false);
+                    return;
+                }
+
+                if (isZoomOpen) {
+                    if (e.key === 'ArrowRight') changeZoomPage(1);
+                    if (e.key === 'ArrowLeft') changeZoomPage(-1);
+                    if (e.key === '+' || e.key === '=') adjustZoom(0.25);
+                    if (e.key === '-') adjustZoom(-0.25);
+                    return;
+                }
+
+                if (!isHistoryOpen && readMode === 'slide') {
+                    if (e.key === 'ArrowRight') nextPage();
+                    if (e.key === 'ArrowLeft') prevPage();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
